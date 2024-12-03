@@ -69,11 +69,11 @@
     <div class="input-section">
         <div class="form-group">
             <label for="full-fare">Tam Basım Parası (₺): </label>
-            <input type="number" id="full-fare" placeholder="Örneğin: 7.67">
+            <input type="number" id="full-fare" placeholder="Örneğin: 10.50">
         </div>
         <div class="form-group">
             <label for="transfer-fare">Aktarma Parası (₺): </label>
-            <input type="number" id="transfer-fare" placeholder="Örneğin: 5.49">
+            <input type="number" id="transfer-fare" placeholder="Örneğin: 6.50">
         </div>
         <div class="form-group">
             <label for="daily-full">Günlük Tam Basım Sayısı: </label>
@@ -85,11 +85,12 @@
         </div>
         <div class="form-group">
             <label for="subscription-fee">Abonman Ücreti (₺): </label>
-            <input type="number" id="subscription-fee" placeholder="Örneğin: 600">
+            <input type="number" id="subscription-fee" placeholder="Örneğin: 306">
         </div>
     </div>
 
     <button id="selectAllWeekdays">Tüm Haftaiçini işaretle</button>
+    <button id="selectAllDays">Tüm 30 Günü işaretle</button>
 
     <div class="calendar-section">
         <h3>30 Günlük Plan</h3>
@@ -105,12 +106,12 @@
     <script>
         // Generate 30-day calendar
         const calendar = document.getElementById('calendar');
-        const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const daysOfWeek = ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cts', 'Paz'];
         for (let i = 1; i <= 30; i++) {
             const dayButton = document.createElement('button');
             dayButton.classList.add('day-button');
             const dayName = daysOfWeek[(i - 1) % 7];
-            dayButton.textContent = `Day ${i} (${dayName})`;
+            dayButton.textContent = `Gün ${i} (${dayName})`;
             dayButton.addEventListener('click', () => {
                 dayButton.classList.toggle('active');
             });
@@ -122,6 +123,13 @@
             dayButtons.forEach((button, index) => {
             const dayIndex = index % 7; // Get day of the week (0-6, Mon-Sun)
             if (dayIndex < 5)
+                button.classList.add('active'); // Mark as active       
+                });
+            });
+
+        document.getElementById('selectAllDays').addEventListener('click', () => {
+            const dayButtons = document.querySelectorAll('.day-button');
+            dayButtons.forEach((button, index) => {                
                 button.classList.add('active'); // Mark as active       
                 });
             });
