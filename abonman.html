@@ -89,6 +89,8 @@
         </div>
     </div>
 
+    <button id="selectAllWeekdays">Tüm Haftaiçini işaretle</button>
+
     <div class="calendar-section">
         <h3>30 Günlük Plan</h3>
         <div class="calendar" id="calendar">
@@ -114,6 +116,16 @@
             });
             calendar.appendChild(dayButton);
         }
+
+        document.getElementById('selectAllWeekdays').addEventListener('click', () => {
+            const dayButtons = document.querySelectorAll('.day-button');
+            dayButtons.forEach((button, index) => {
+            const dayIndex = index % 7; // Get day of the week (0-6, Mon-Sun)
+            if (dayIndex < 5)
+                button.classList.add('active'); // Mark as active       
+                });
+            });
+
 
         document.getElementById('calculate').addEventListener('click', () => {
             // Get input values
