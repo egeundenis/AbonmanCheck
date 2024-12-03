@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABONMAN Satın Almalı Mıyım?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            text-align: center;
+        }
+        .input-section, .calendar-section {
+            margin-bottom: 20px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .day-button {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .day-button.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>ABONMAN Satın Almalı Mıyım?</h1>
+
+    <div class="input-section">
+        <div class="form-group">
+            <label for="full-fare">Tam Basım Parası (₺): </label>
+            <input type="number" id="full-fare" placeholder="Örneğin: 7.67">
+        </div>
+        <div class="form-group">
+            <label for="transfer-fare">Aktarma Parası (₺): </label>
+            <input type="number" id="transfer-fare" placeholder="Örneğin: 5.49">
+        </div>
+        <div class="form-group">
+            <label for="daily-full">Günlük Tam Basım Sayısı: </label>
+            <input type="number" id="daily-full" placeholder="Örneğin: 2">
+        </div>
+        <div class="form-group">
+            <label for="daily-transfer">Günlük Aktarma Sayısı: </label>
+            <input type="number" id="daily-transfer" placeholder="Örneğin: 2">
+        </div>
+        <div class="form-group">
+            <label for="subscription-fee">Abonman Ücreti (₺): </label>
+            <input type="number" id="subscription-fee" placeholder="Örneğin: 600">
+        </div>
+    </div>
+
+    <div class="calendar-section">
+        <h3>30 Günlük Plan</h3>
+        <div class="calendar" id="calendar">
+            <!-- Days will be dynamically added -->
+        </div>
+    </div>
+
+    <button id="calculate">Hesapla</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        // Generate 30-day calendar
+        const calendar = document.getElementById('calendar');
+        const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        for (let i = 1; i <= 30; i++) {
+            const dayButton = document.createElement('button');
+            dayButton.classList.add('day-button');
+            const dayName = daysOfWeek[(i - 1) % 7];
+            dayButton.textContent = `Day ${i} (${dayName})`;
+            dayButton.addEventListener('click', () => {
+                dayButton.classList.toggle('active');
+            });
+            calendar.appendChild(dayButton);
+        }
+
+        document.getElementById('calculate').addEventListener('click', () => {
+            // Get input values
+            const fullFare = parseFloat(document.getElementById('full-fare').value);
+            const transferFare = parseFloat(document.getElementById('transfer-fare').value);
+            const dailyFull = parseInt(document.getElementById('daily-full').value);
+            const dailyTransfer = parseInt(document.getElementById('daily-transfer').value);
+            const subscriptionFee = parseFloat(document.getElementById('subscription-fee').value);
+
+            // Validate inputs
+            if (isNaN(fullFare) || isNaN(transferFare) || isNaN(dailyFull) || isNaN(dailyTransfer) || isNaN(subscriptionFee)) {
+                document.getElementById('result').textContent = "Lütfen tüm bilgileri doğru şekilde girin.";
+                return;
+            }
+
+            // Calculate daily cost
+            const dailyCost = (dailyFull * fullFare) + (dailyTransfer * transferFare);
+
+            // Count selected days
+            const selectedDays = document.querySelectorAll('.day-button.active').length;
+
+            // Calculate total cost for selected days
+            const totalCost = dailyCost * selectedDays;
+
+            // Compare with subscription fee
+            if (totalCost > subscriptionFee) {
+                document.getElementById('result').textContent = `Evet, abonman almalısın. Toplam normal maliyet: ₺${totalCost.toFixed(2)}, Abonman ücreti: ₺${subscriptionFee.toFixed(2)}`;
+            } else {
+                document.getElementById('result').textContent = `Hayır, abonman almamalısın. Toplam normal maliyet: ₺${totalCost.toFixed(2)}, Abonman ücreti: ₺${subscriptionFee.toFixed(2)}`;
+            }
+        });
+    </script>
+</body>
+</html>
